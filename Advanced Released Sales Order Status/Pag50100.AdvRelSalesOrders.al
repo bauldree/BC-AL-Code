@@ -7,7 +7,7 @@ using Microsoft.Warehouse.Document;
 page 50100 AdvRelSalesOrders
 {
     ApplicationArea = All;
-    Caption = 'Advanced Released Sales Orders';
+    Caption = 'Advanced Released Sales Order Status';
     PageType = List;
     SourceTable = "Sales Header";
     UsageCategory = Lists;
