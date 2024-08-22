@@ -4,7 +4,7 @@ using Microsoft.Sales.Document;
 using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Document;
 
-page 59011 SOTest
+page 50100 AdvRelSalesOrders
 {
     ApplicationArea = All;
     Caption = 'Advanced Released Sales Orders';
