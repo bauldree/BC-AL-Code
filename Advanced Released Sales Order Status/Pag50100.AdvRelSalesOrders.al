@@ -4,10 +4,10 @@ using Microsoft.Sales.Document;
 using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Document;
 
-page 50100 AdvRelSalesOrders
+page 59011 SOTest
 {
     ApplicationArea = All;
-    Caption = 'Advanced Released Sales Order Status';
+    Caption = 'Advanced Released Sales Orders';
     PageType = List;
     SourceTable = "Sales Header";
     UsageCategory = Lists;
@@ -81,6 +81,7 @@ page 50100 AdvRelSalesOrders
                 {
                     ApplicationArea = All;
                     ToolTip = 'Displays the document number of the active warehouse shipment for this sales order.';
+                    Editable = false;
                     DrillDownPageId = "Warehouse Shipment";
                     trigger OnDrillDown()
                     var
@@ -157,8 +158,6 @@ page 50100 AdvRelSalesOrders
             TakeAction := 'Invoice and Close';
         if ((Rec."Completely Shipped" = false) and (Rec."Shipped Not Invoiced" = true) and (Rec.Shipped = true)) then
             TakeAction := 'Invoice';
-
-
     end;
 
     local procedure CalculateTotalQuantity(): Decimal
@@ -226,5 +225,4 @@ page 50100 AdvRelSalesOrders
         end;
         exit(DropShipment);
     end;
-
 }
