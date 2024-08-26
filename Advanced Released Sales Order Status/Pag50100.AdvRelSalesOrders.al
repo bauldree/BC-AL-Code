@@ -34,6 +34,7 @@ page 59011 SOTest
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the action to take for the document.';
+                    StyleExpr = TakeActionStyle;
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
@@ -140,6 +141,8 @@ page 59011 SOTest
         WarehouseShipmentNo: Code[20];
         DropShipment: Boolean;
         TakeAction: Text[30];
+        TakeActionStyle: Text;
+        AvailableInventory: Boolean;
 
     trigger OnOpenPage()
     begin
@@ -154,10 +157,25 @@ page 59011 SOTest
         WarehouseShipmentNo := GetWarehouseShipmentNo();
         DropShipment := CheckDropShipment();
         TakeAction := '';
-        if ((Rec."Completely Shipped" = true) and (Rec."Shipped Not Invoiced" = true) and (Rec.Shipped = true)) then
+        AvailableInventory := CheckAvailableInventory();
+        if (AvailableInventory = true) and (WarehouseShipmentNo = '') then begin
+            TakeAction := 'Create WHSE Shipment';
+            TakeActionStyle := 'Favorable';
+        end;
+        if (WarehouseShipmentNo <> '') then begin
+            TakeAction := 'SEND IT!';
+            TakeActionStyle := 'sTRONG';
+        end;
+        if ((Rec."Completely Shipped" = true) and (Rec."Shipped Not Invoiced" = true) and (Rec.Shipped = true)) then begin
             TakeAction := 'Invoice and Close';
-        if ((Rec."Completely Shipped" = false) and (Rec."Shipped Not Invoiced" = true) and (Rec.Shipped = true)) then
+            TakeActionStyle := 'Unfavorable';
+        end;
+        if ((Rec."Completely Shipped" = false) and (Rec."Shipped Not Invoiced" = true) and (Rec.Shipped = true)) then begin
             TakeAction := 'Invoice';
+            TakeActionStyle := 'Unfavorable';
+        end;
+
+
     end;
 
     local procedure CalculateTotalQuantity(): Decimal
@@ -224,5 +242,27 @@ page 59011 SOTest
             until SalesLine.Next() = 0;
         end;
         exit(DropShipment);
+    end;
+
+    local procedure CheckAvailableInventory(): Boolean
+    var
+        SalesLine: Record "Sales Line";
+        Item: Record Item;
+        IsInventoryAvailable: Boolean;
+    begin
+        IsInventoryAvailable := false;
+        SalesLine.SetRange("Document Type", Rec."Document Type");
+        SalesLine.SetRange("Document No.", Rec."No.");
+        SalesLine.SetRange(Type, SalesLine.Type::Item);
+        if SalesLine.FindSet() then begin
+            repeat
+                Item.Get(SalesLine."No.");
+                if Item.Inventory >= 0 then begin
+                    IsInventoryAvailable := true;
+                    //break;
+                end;
+            until SalesLine.Next() = 0;
+        end;
+        exit(IsInventoryAvailable);
     end;
 }
