@@ -1,3 +1,5 @@
+### Coffee Challenge
+https://www.linkedin.com/feed/update/urn:li:activity:7258887223624781824/
 # User Activity List
 The goal of this project is to create an AL extension for Business Central that will create a log of pages that a user visits.
 
