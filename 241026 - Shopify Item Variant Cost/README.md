@@ -1,3 +1,5 @@
+### Coffee Challenge
+https://www.linkedin.com/posts/aaronbauldree_msdyn365bc-businesscentral-shopify-activity-7256010953446600704-D-0E
 # Shopify Item Variable Cost
 
 The goal of this project is to create an AL extension for Business Central that will lookup the current item cost and create an easy to use excel file that can be used to update the cost of items in Shopify.
